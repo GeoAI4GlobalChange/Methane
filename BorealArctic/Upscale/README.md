@@ -1,7 +1,7 @@
 # Code introduction
 1)	Causality-guided machine learning model  
-In the”model_training_demo.py” file, run the “model_training” function.  
-2) Identifying dominant controls on wetland CH4 emission variability  
-In the”methane_analysis_demo.py” file, run the “grid_variation_analysis” function.  
-3) Quantifying dominant controls on wetland CH4 emission trend  
-In the”methane_analysis_demo.py” file, run the “grid_trend_analysis” function.
+In the "model_training_demo.py" file, run the "model_training" function.  
+2) Detailed code for causal-ml model   
+In the "methane_module.py" file.  
+3) Detailed code for data-processing  
+In the "methane_data.py" file.
