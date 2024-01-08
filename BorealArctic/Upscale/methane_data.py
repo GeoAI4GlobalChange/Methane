@@ -16,7 +16,7 @@ def fluxnetData4ML(dir_site_data,target_variable,input_cols,path_site_info,seed,
     test_datasets = {}  # Initialize the testing datasets
     site_type_dict = {}  # Initialize the list of wetland types for each site
     df = pd.read_csv(
-        path_site_info)  # load data of site information，and the 'site_location_v2.csv' is located in the same folder with this py file.
+        path_site_info)  # load data of site information
     df = df[['Name', 'Type']].values
     for idx in range(df.shape[0]):
         site_type_dict[df[idx, 0]] = df[idx, 1]  # obtain wetland type for each site
