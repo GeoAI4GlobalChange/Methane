@@ -43,7 +43,7 @@ def ForcingData_load(forcing_file_list,forcing_vars,dir_forcing,max_lat_idx,lats
             all_forcing_vars = np.concatenate((all_forcing_vars, temp_var), axis=0)
         print('loading', file)
     # obatain datsets of GPP
-    nc_file = dir_forcing + f'GOSIF_GPP_05degree_weekly_2001-2021_v2.nc'
+    nc_file = dir_forcing + f'GOSIF_GPP_05degree_weekly_2001-2021.nc'
     nc = Dataset(nc_file, 'r')
     temp_var = nc.variables['GPP'][52:, :max_lat_idx].astype(np.float32)# (start from the year of 2002)
     nc.close()
