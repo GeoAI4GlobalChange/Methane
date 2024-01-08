@@ -28,8 +28,8 @@ def ML_train(model,opt,opt_chamber,loss,causal_stren_raw,train_loader,
         mse_train += l.item() * batch_x.shape[0]
         opt.step()
     #############################################
-    # finetune chamber
-    for finetune_epoch_idx in range(chamber_tune_epochs):
+    # chamber data
+    for chamber_epoch_idx in range(chamber_tune_epochs):
         for chamber_idx in chamber_train_idxs:
             x_chamber_data = x_chamber[chamber_idx]
             x_nan_num = np.sum(np.isnan(x_chamber_data.reshape(-1)))
@@ -191,7 +191,6 @@ class Causal_ML(torch.nn.Module):
         self.input_dim = input_dim
         self.device=device
         self.dropout=VariationalDropout(dropout,batch_first=True)
-    # @torch.jit.script_method
     def forward(self, x):
         if self.training:
             x = self.dropout(x)
@@ -199,22 +198,17 @@ class Causal_ML(torch.nn.Module):
         c_t = torch.zeros(x.shape[0], self.input_dim*self.n_units).to(device=self.device)#.cuda()
         outputs=[]
         for t in range(x.shape[1]):
-            # eq 1
             j_tilda_t = torch.tanh(torch.einsum("bij,ijk->bik", h_tilda_t, self.W_j) + \
                                    torch.einsum("bij,jik->bjk", x[:,t,:].unsqueeze(1), self.U_j) + self.b_j)
             inp =  torch.cat([x[:, t, :], h_tilda_t.view(h_tilda_t.shape[0], -1)], dim=1)
-            # eq 2
             i_t = torch.sigmoid(self.W_i(inp))
             f_t = torch.sigmoid(self.W_f(inp))
             o_t = torch.sigmoid(self.W_o(inp))
-            # eq 3
             c_t = c_t*f_t + i_t*j_tilda_t.reshape(j_tilda_t.shape[0], -1)
-            # eq 4
             h_tilda_t = (o_t*torch.tanh(c_t)).view(h_tilda_t.shape[0], self.input_dim, self.n_units)
             outputs += [h_tilda_t]
         outputs = torch.stack(outputs)
         outputs = outputs.permute(1, 0, 2, 3)
-        # eq 8
         alphas = torch.tanh(torch.einsum("btij,ijk->btik", outputs, self.F_alpha_n) +self.F_alpha_n_b)
         alphas = torch.exp(alphas)
         alphas = alphas/torch.sum(alphas, dim=1, keepdim=True)
