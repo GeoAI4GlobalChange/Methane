@@ -7,7 +7,7 @@ import statsmodels.api as sm
 import copy
 def FCH4Data_load(dir_fch4,max_lat_idx):#load upscaled FCH4 dataset
     nc = Dataset(dir_fch4, 'r')
-    fch4_var = nc.variables['FCH4_enemble_mean'][-1, 52:, :max_lat_idx].astype(np.float32)
+    fch4_var = nc.variables['FCH4'][-1, 52:, :max_lat_idx].astype(np.float32)
     lats = nc.variables['latitude'][:max_lat_idx]
     lons = nc.variables['longitude'][:]
     nc.close()
