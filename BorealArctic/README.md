@@ -13,5 +13,5 @@ The original eddy covariance methane flux datasets are from FLUXNET-CH4, availab
 For the input drivers, GPP was obtained from the GOSIF dataset, which is available at https://globalecology.unh.edu/data/GOSIF-GPP.html. Other variables (soil temperature, air temperature, air pressure, precipitation, wind speed, snow cover, and soil water content) were obtained from ERA5-land datasets, which are available at (https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5).  
 For more datasets used for uncertainty analysis, please see the correponding paper.  
 ## References
-Details of the research will be seen in the upcoming paper “Two decades of boreal arctic wetland methane emissions modulated by warming and vegetation activity” (The manuscript will be online available very soon). If you have any questions about the code or dataset, please contact yuankunxiaojia@gmail.com or lifa.lbnl@gmail.com.
+Details of the research will be seen in the upcoming paper “Two decades of boreal arctic wetland methane emissions modulated by warming and vegetation activity” (The manuscript will be online available very soon). If you have any questions about the code or dataset, please contact kunxiaojiayuan@lbl.gov or fali2@stanford.edu.
 
