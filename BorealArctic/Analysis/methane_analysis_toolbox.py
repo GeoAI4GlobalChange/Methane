@@ -4,7 +4,7 @@ from netCDF4 import Dataset
 from scipy import signal
 import pingouin as pg
 import statsmodels.api as sm
-
+import copy
 def FCH4Data_load(dir_fch4,max_lat_idx):#load upscaled FCH4 dataset
     nc = Dataset(dir_fch4, 'r')
     fch4_var = nc.variables['FCH4_enemble_mean'][-1, 52:, :max_lat_idx].astype(np.float32)
@@ -67,8 +67,8 @@ def Forcing_anomaly_yearly(all_forcing_vars,lats,lons):#calculate forcing anomal
 
 def Par_cor(forcing_vars,lats,lons,all_forcing_vars_anomaly,fch4_var_anomaly,all_vars,target_var): #calculate partial correlation between FCH4 and its drivers
     partial_result = np.full((len(forcing_vars), len(lats), len(lons)), np.nan)
-    for lat_idx in range(len(lats)):  # len(lats)
-        for lon_idx in range(len(lons)):  # len(lons)
+    for lat_idx in range(len(lats)):
+        for lon_idx in range(len(lons)):
             print(lat_idx, lon_idx)
             if np.sum(np.isnan(all_forcing_vars_anomaly[:, :, lat_idx, lon_idx].reshape(-1))) == 0:
                 if np.sum(np.isnan(fch4_var_anomaly[:, lat_idx, lon_idx])) == 0:
@@ -102,21 +102,25 @@ def LinearReg_model(forcing_vars,lats,lons,fch4_var_anomaly,all_forcing_vars_ano
                 target_series = target_series[np.newaxis]
                 data = np.concatenate((input_series, target_series), axis=0)
                 data = data.transpose((1, 0))
-                # data = signal.detrend(data, axis=0)
                 if np.sum(np.isnan(data.reshape(-1))) == 0:
                     df = pd.DataFrame(data, columns=all_vars)
-                    if forcing_group == 'temperature':
-                        input_cols = ['stl1', 't2m']
-                    elif forcing_group == 'temperature_gpp':
-                        input_cols = ['stl1', 't2m', 'gpp']
-                    else:
-                        input_cols = ['stl1', 't2m', 'gpp', 'tp', 'swvl1']
+                    input_cols = all_vars[:-1]
                     x = df[input_cols]
                     y = df['fch4']
                     x = sm.add_constant(x)
-
                     model = sm.OLS(y, x).fit()
-                    predictions = model.predict(x)
+                    if forcing_group == 'temperature':
+                        input_cols = ['stl1', 't2m']
+                    elif forcing_group == 'gpp':
+                        input_cols = ['gpp']
+                    else:
+                        input_cols = ['tp', 'swvl1']
+                    df_temp = copy.deepcopy(x)
+                    first_row_value = df_temp[input_cols].values[0]
+                    first_row_value = first_row_value[np.newaxis]
+                    first_row_value = np.repeat(first_row_value, len(df_temp), axis=0)
+                    df_temp[input_cols] = first_row_value
+                    predictions = model.predict(df_temp)
                     f_pvalue = model.f_pvalue
                     if f_pvalue < 0.1:
                         prediction_result[:, lat_idx, lon_idx] = predictions
