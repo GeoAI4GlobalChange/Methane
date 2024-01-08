@@ -129,7 +129,7 @@ if __name__=='__main__':
     target = 'FCH4_weekly'  # name of methane emission variable in the observation datasets
     target_cols = ['GPP', 'PA', 'TS', 'TA', 'P', 'WS', 'SC', 'SWC']  # name of the drivers
     dir = r'./data/'  # path of observation datasets (including FCH4 and its drivers)
-    path_site_info = r'./site_location_v2.csv'  # path of site informations (including site name and the corresponding wetland type)
+    path_site_info = r'./site_location.csv'  # path of site informations (including site name and the corresponding wetland type)
     dir_causal_stren = f'./PCMCI_causality/'  # path of causality strength between FCH4 and its drivers
     chamber_dir = './chamber_data/'  # path of chamber datasets (including FCH4 and its drivers)
     para_dir = './para/'  # path to save the model parameters
