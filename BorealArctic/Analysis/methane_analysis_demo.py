@@ -52,7 +52,7 @@ def grid_trend_analysis(forcing_group,max_lat_idx,dir_forcing,dir_fch4,forcing_f
     all_vars = copy.deepcopy(forcing_vars)
     all_vars.extend(['fch4'])
 
-    #Quantify the controls from each driver on the trend of FCH4 using a statistical linear regression model
+    #Quantify the controls from drivers on the trend of FCH4 using a statistical linear regression model
     corr_result,prediction_result=LinearReg_model(forcing_vars,lats,lons,fch4_var_anomaly,all_forcing_vars_anomaly,all_vars,forcing_group)
 
     #obtain and save the results
@@ -80,24 +80,19 @@ def grid_trend_analysis(forcing_group,max_lat_idx,dir_forcing,dir_fch4,forcing_f
 if __name__ == '__main__':
     max_lat_idx = 90
     target_var = 'fch4'
-    forcing_group = 'temperature'  # select variable groups that are included for fch4 prediction. Three options: 'temperature','temperature_gpp','temperature_gpp_water'
+    forcing_group = 'temperature'  # select variable groups that are included for fch4 prediction. Three options: 'temperature','gpp','water'
     dir_forcing = './data/forcing_v2/'  # path of input forcing datasets
-    dir_fch4 = './results/wetland_FCH4_2002-2021_upscale_result.nc'  # path of upscaled methane dataset
+    dir_fch4_1 = './results/wetland_FCH4_2002-2021_upscale_result1.nc'  # path of upscaled methane dataset
+    dir_fch4_2 = './results/wetland_FCH4_2002-2021_upscale_result2.nc'  # path of upscaled methane dataset
     save_file = f'./results/wetland_FCH4_partial_corr.nc'  # path to save the partial correlation results
 
     forcing_file_list = ['soil_temperature_level_1', '2m_temperature', 'snow_cover', 'surface_pressure',
                          'total_precipitation', 'volumetric_soil_water_layer_1',
                          'windspeed']  # the file names of input forcing
     forcing_vars = ['stl1', 't2m', 'snowc', 'sp',
-                    'tp', 'swvl1', 'ws']  # the names of the input forcing
+                    'tp', 'swvl1', 'ws']  # the variable names of the input forcing
 
     #Calculate partial correlation between FCH4 and its drivers in each grid cell
-    grid_variation_analysis(max_lat_idx,dir_forcing,dir_fch4,save_file,forcing_file_list,forcing_vars,target_var)
-    #Calculate FCH4 driven by different variables using statistical linear regression models
-    grid_trend_analysis(forcing_group, max_lat_idx, dir_forcing, dir_fch4, forcing_file_list, forcing_vars)
-
-
-
-
-
-
+    grid_variation_analysis(max_lat_idx,dir_forcing,dir_fch4_1,save_file,forcing_file_list,forcing_vars,target_var)
+    #Calculate CH4 driven by different variables using statistical linear regression models
+    grid_trend_analysis(forcing_group, max_lat_idx, dir_forcing, dir_fch4_2, forcing_file_list, forcing_vars)
