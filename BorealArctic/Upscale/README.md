@@ -1,5 +1,5 @@
 # Code introduction
-1)	Causality-guided machine learning model  
+1)	Machine learning training  
 In the "model_training_demo.py" file, run the "model_training" function.  
 2) Detailed code for causal-ml model   
 In the "methane_module.py" file.  
