@@ -89,8 +89,7 @@ def fluxnetData4ML(dir_site_data,target_variable,input_cols,path_site_info,seed,
                     val_datasets[temp_type]['Y'] = np.concatenate(
                         [val_datasets[temp_type]['Y'], y_train1[validate_idxs]], axis=0)
     return train_datasets,val_datasets,test_datasets
-def get_causal_strength():
-    return
+
 def Data4ML_tensor(wetland_type,train_datasets,val_datasets,test_datasets,chamber_input,chamber_output,batch_size,seed,test_precent):
     type=wetland_type
     x_chamber = chamber_input[type]
