@@ -81,7 +81,7 @@ if __name__ == '__main__':
     max_lat_idx = 90
     target_var = 'fch4'
     forcing_group = 'temperature'  # select variable groups that are included for fch4 prediction. Three options: 'temperature','gpp','water'
-    dir_forcing = './data/forcing_v2/'  # path of input forcing datasets
+    dir_forcing = './data/forcing/'  # path of input forcing datasets
     dir_fch4_1 = './results/wetland_FCH4_2002-2021_upscale_result1.nc'  # path of upscaled methane dataset
     dir_fch4_2 = './results/wetland_FCH4_2002-2021_upscale_result2.nc'  # path of upscaled methane dataset
     save_file = f'./results/wetland_FCH4_partial_corr.nc'  # path to save the partial correlation results
